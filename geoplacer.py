@@ -1,6 +1,7 @@
 import random
 import math
 
+#classes
 class Point:
     def __init__(self, x, y):
         if x == None:
@@ -23,32 +24,56 @@ class Point:
 
 class Shape:
     def __init__(self, points):
-        self.points = points
+        if points == None: 
+            self.points = []
+            self.centroid = Point(0, 0)
+        else: 
+            self.points = points
 
-        sumX = 0
-        sumY = 0
-        i = len(self.points)
-        for point in points:
-            sumX = sumX + point.x
-            sumY = sumY + point.y
+            sumX = 0
+            sumY = 0
+            i = len(self.points)
+            for point in points:
+                sumX = sumX + point.x
+                sumY = sumY + point.y
+
+            centroid = Point(sumX / i, sumY / i)
+            self.centroid = centroid
+
+    def addPoint(self, point):
+        oldCentroid = self.centroid
+        sumX = oldCentroid * len(self.points)
+        sumY = oldCentroid * len(self.points)
+
+        self.points.append(point)
+        sumX = sumX + point.x 
+        sumY = sumY + point.y
 
         centroid = Point(sumX / i, sumY / i)
         self.centroid = centroid
 
-    def addPoint(self, point):
-        self.points.append(point)
+class orgNode: 
+    def __init__(self, point, under):
+        pass
 
 # variables and constants
 limit = 5
-points = 3
+points = 9
 space = [[Point(None, None) for x in range(limit)] for y in range(limit)]
 
 test = Shape([Point(0, 0), Point(0, 1), Point(0, 2), Point(1, 2), Point(2, 2), Point(2, 1), Point(2, 0), Point (1, 0)])
 
 # point functions
 def plotPoint(x, y):
-    point = Point(x, y);
-    space[y][x] = point;
+    point = Point(x, y)
+    space[y][x] = point
+
+#shape functions
+def orderPointsLeft(shape):
+    print("Filler")
+
+def orderPointsRight(shape):
+    print("Filler")
 
 #display
 def printShape(shape):
