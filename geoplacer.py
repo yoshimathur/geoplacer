@@ -1,6 +1,6 @@
-from mimetypes import init
 import random
 import math
+
 
 #classes
 class Point:
@@ -65,6 +65,7 @@ class orgNode:
     def setDown(self, down):
         self.down = down
 
+
 # variables and constants
 limit = 5
 points = 10
@@ -72,15 +73,15 @@ space = [[Point(None, None) for x in range(limit)] for y in range(limit)]
 
 test = Shape([Point(0, 0), Point(0, 1), Point(0, 2), Point(1, 2), Point(2, 2), Point(2, 1), Point(2, 0), Point (1, 0)])
 
+
 # point functions
 def plotPoint(x, y):
     point = Point(x, y)
     space[y][x] = point
 
+
 #shape functions
 def orderPointsVertical(current, point):
-    print("--current--")
-    print(current)
     while True: 
         if current.down == None:
             if point.y < current.point.y:
@@ -97,6 +98,7 @@ def orderPointsVertical(current, point):
         else: 
             if point.y < current.point.y:
                 orderPointsVertical(current.down, point)
+                break
             elif point.y > current.point.y:
                 currentTop = current.top
                 newNode = orgNode(point, currentTop, current)
@@ -114,23 +116,38 @@ def orderPointsLeft(shape):
 
     for point in shape.points: 
         i = point.x 
-        print("--position--")
-        print(i)
         current = org[i]
         if current == None: 
-            print("Adding")
             org[i] = orgNode(point, None, None)
         else:
-            print("Sorting")
             topNode = orderPointsVertical(current, point)
-            print("--topNode--")
-            print(topNode)
             if topNode != None: 
                 org[i] = topNode
-
+    
+    print("\nOrdered shape left...")
+    printOrgArr(org)
+    return org
 
 def orderPointsRight(shape):
-    print("Filler")
+    org = [None] * limit
+    
+    for point in shape.points: 
+        i = limit - point.x - 1
+        current = org[i]
+        if current == None: 
+            org[i] = orgNode(point, None, None)
+        else:
+            topNode = orderPointsVertical(current, point)
+            if topNode != None: 
+                org[i] = topNode
+    
+    print("\nOrdered shape right...")
+    printOrgArr(org)
+    return org
+
+def createShape(initial, shape):
+    pass
+    
 
 #display
 def printShape(shape):
@@ -152,6 +169,24 @@ def printShape(shape):
     print(f"Centroid: ({shape.centroid.x}, {shape.centroid.y})")
     print("\n")
 
+def printOrgArr(array):
+    for i in range(len(array)):
+        orgNode = array[i]
+        if orgNode == None:
+            print("·")
+        else:
+            while True: 
+                if orgNode.down == None:
+                    pointMsg = "(" + str(orgNode.point.x) + ", " + str(orgNode.point.y) + ")"
+                    print(pointMsg)
+                    break
+                else: 
+                    pointMsg = "(" + str(orgNode.point.x) + ", " + str(orgNode.point.y) + ")"
+                    print(pointMsg, end=" --> ")
+                    orgNode = orgNode.down
+    print("\n")
+
+
 # main
 initial = []
 for i in range(points):
@@ -162,3 +197,4 @@ for i in range(points):
 printShape(Shape(initial))
 printShape(test)
 orderPointsLeft(Shape(initial))
+orderPointsRight(Shape(initial))
